@@ -89,23 +89,34 @@ export function StatCard({
     tone?: "primary" | "success" | "accent";
 }) {
     const toneMap = {
-        primary: "bg-primary/10 text-primary",
-        success: "bg-success/12 text-success",
-        accent: "bg-accent/20 text-accent-foreground",
+        primary: "bg-primary text-primary-foreground shadow-primary/20",
+        success: "bg-success text-success-foreground shadow-success/20",
+        accent: "bg-accent text-accent-foreground shadow-accent/20",
     } as const;
 
+    const bgMap = {
+        primary: "from-primary/10 to-transparent",
+        success: "from-success/10 to-transparent",
+        accent: "from-accent/10 to-transparent",
+    };
+
     return (
-        <div className="panel p-5">
-            <div className="flex items-start justify-between">
-                <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">{label}</p>
+        <div className="group relative overflow-hidden rounded-2xl border border-border/50 bg-surface/50 p-6 backdrop-blur-xl shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+            <div className={cn("absolute -right-6 -top-6 h-32 w-32 rounded-full bg-gradient-to-br blur-3xl transition-transform duration-500 group-hover:scale-150", bgMap[tone])} />
+            <div className="relative z-10 flex items-start justify-between">
+                <p className="text-[13px] font-bold tracking-wider text-muted-foreground uppercase">{label}</p>
                 {Icon && (
-                    <span className={cn("grid h-8 w-8 place-items-center rounded-lg", toneMap[tone])}>
-                        <Icon className="h-4 w-4" />
+                    <span className={cn("grid h-10 w-10 place-items-center rounded-xl shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6", toneMap[tone])}>
+                        <Icon className="h-5 w-5" />
                     </span>
                 )}
             </div>
-            <p className="mt-3 text-2xl font-extrabold tracking-tight text-ink">{value}</p>
-            {delta && <p className="mt-1 text-xs font-semibold text-success">{delta}</p>}
+            <p className="relative z-10 mt-5 text-3xl font-black tracking-tight text-ink">{value}</p>
+            {delta && (
+                <p className="relative z-10 mt-2 text-xs font-bold text-success flex items-center bg-success/10 w-max px-2 py-1 rounded-md">
+                    {delta}
+                </p>
+            )}
         </div>
     );
 }

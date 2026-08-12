@@ -165,7 +165,13 @@ function PosTill() {
                                         onClick={() => add(p)}
                                         className="group rounded-2xl border border-border bg-surface-2 p-4 text-left transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary/5"
                                     >
-                                        <div className="mb-3 h-10 w-10 rounded-xl bg-primary/12 transition-colors group-hover:bg-primary/20" />
+                                        {p.image ? (
+                                            <div className="mb-3 h-12 w-12 overflow-hidden rounded-xl bg-surface transition-transform group-hover:scale-105">
+                                                <img src={p.image} alt={p.name} className="h-full w-full object-cover" />
+                                            </div>
+                                        ) : (
+                                            <div className="mb-3 h-10 w-10 rounded-xl bg-primary/12 transition-colors group-hover:bg-primary/20" />
+                                        )}
                                         <p className="text-sm font-semibold text-ink">{p.name}</p>
                                         <p className="text-xs text-muted-foreground">
                                             {aed(p.price)} / {p.unit}

@@ -135,21 +135,21 @@ export const customers: Customer[] = [
     { id: "c4", name: "James Okoro", phone: "+971 56 •• 1102", tier: "Bronze", points: 640, visits: 12, spend: 2100 },
 ];
 
-export type TillProduct = { id: string; name: string; price: number; unit: string; vat: number };
+export type TillProduct = { id: string; name: string; price: number; unit: string; vat: number; image: string };
 
 export const tillProducts: TillProduct[] = [
-    { id: "p1", name: "Bananas", price: 5.75, unit: "kg", vat: 0.05 },
-    { id: "p2", name: "Laban 1L", price: 5.5, unit: "pcs", vat: 0.05 },
-    { id: "p3", name: "Arabic Bread", price: 3.0, unit: "pack", vat: 0 },
-    { id: "p4", name: "Chicken Whole", price: 18.9, unit: "kg", vat: 0.05 },
-    { id: "p5", name: "Basmati 5kg", price: 38.5, unit: "bag", vat: 0.05 },
-    { id: "p6", name: "Medjool Dates", price: 29.0, unit: "box", vat: 0.05 },
-    { id: "p7", name: "Tomatoes", price: 6.25, unit: "kg", vat: 0.05 },
-    { id: "p8", name: "Mineral Water 24x", price: 12.0, unit: "pack", vat: 0.05 },
-    { id: "p9", name: "Eggs 30s", price: 16.75, unit: "tray", vat: 0.05 },
-    { id: "p10", name: "Olive Oil 1L", price: 34.0, unit: "btl", vat: 0.05 },
-    { id: "p11", name: "Cheese Slices", price: 11.5, unit: "pack", vat: 0.05 },
-    { id: "p12", name: "Detergent 3kg", price: 27.9, unit: "box", vat: 0.05 },
+    { id: "p1", name: "Bananas", price: 5.75, unit: "kg", vat: 0.05, image: "https://images.unsplash.com/photo-1528825871115-3581a5387919?w=100&q=80" },
+    { id: "p2", name: "Laban 1L", price: 5.5, unit: "pcs", vat: 0.05, image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=100&q=80" },
+    { id: "p3", name: "Arabic Bread", price: 3.0, unit: "pack", vat: 0, image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=100&q=80" },
+    { id: "p4", name: "Chicken Whole", price: 18.9, unit: "kg", vat: 0.05, image: "https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=100&q=80" },
+    { id: "p5", name: "Basmati 5kg", price: 38.5, unit: "bag", vat: 0.05, image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=100&q=80" },
+    { id: "p6", name: "Medjool Dates", price: 29.0, unit: "box", vat: 0.05, image: "https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?w=100&q=80" },
+    { id: "p7", name: "Tomatoes", price: 6.25, unit: "kg", vat: 0.05, image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=100&q=80" },
+    { id: "p8", name: "Mineral Water 24x", price: 12.0, unit: "pack", vat: 0.05, image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=100&q=80" },
+    { id: "p9", name: "Eggs 30s", price: 16.75, unit: "tray", vat: 0.05, image: "https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=100&q=80" },
+    { id: "p10", name: "Olive Oil 1L", price: 34.0, unit: "btl", vat: 0.05, image: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=100&q=80" },
+    { id: "p11", name: "Cheese Slices", price: 11.5, unit: "pack", vat: 0.05, image: "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=100&q=80" },
+    { id: "p12", name: "Detergent 3kg", price: 27.9, unit: "box", vat: 0.05, image: "https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=100&q=80" },
 ];
 
 export const aggregators = ["Talabat", "Careem", "InstaShop", "Deliveroo"] as const;

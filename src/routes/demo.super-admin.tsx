@@ -216,70 +216,74 @@ function SuperAdmin() {
                     <TabsTrigger value="settings">Tax & currency</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="tenants" className="mt-5">
-                    <div className="panel overflow-x-auto">
-                        <Table className="min-w-[900px]">
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Tenant</TableHead>
-                                    <TableHead>Plan</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead className="text-right">Outlets</TableHead>
-                                    <TableHead className="text-right">Tills</TableHead>
-                                    <TableHead className="text-right">Monthly orders</TableHead>
-                                    <TableHead className="text-right">Actions</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {tenants.map((t) => (
-                                    <TableRow key={t.id}>
-                                        <TableCell>
-                                            <div className="font-semibold text-ink">{t.name}</div>
-                                            <div className="text-xs text-muted-foreground">TRN {t.trn}</div>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Badge variant="outline" className="rounded-full font-semibold">
-                                                {t.plan}
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell>
-                                            <span className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${statusTone[t.status]}`}>
-                                                {t.status}
-                                            </span>
-                                        </TableCell>
-                                        <TableCell className="text-right tabular-nums">{t.outlets}</TableCell>
-                                        <TableCell className="text-right tabular-nums">{t.tills}</TableCell>
-                                        <TableCell className="text-right tabular-nums">
-                                            {t.monthlyOrders.toLocaleString("en-AE")}
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className="flex justify-end gap-2">
-                                                <Button
-                                                    size="sm"
-                                                    variant="outline"
-                                                    className="rounded-lg"
-                                                    onClick={() => upgrade(t.id)}
-                                                    disabled={t.plan === "Enterprise"}
-                                                >
-                                                    <ArrowUpCircle className="mr-1 h-3.5 w-3.5" /> Upgrade
-                                                </Button>
-                                                <Button
-                                                    size="sm"
-                                                    variant="ghost"
-                                                    className="rounded-lg"
-                                                    onClick={() => toggleStatus(t.id)}
-                                                >
-                                                    <Ban className="mr-1 h-3.5 w-3.5" />
-                                                    {t.status === "Suspended" ? "Reactivate" : "Suspend"}
-                                                </Button>
-                                            </div>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </div>
-                </TabsContent>
+                <TabsContent value="tenants" className="mt-8">
+                    <Table className="min-w-[800px]">
+                        <TableHeader className="bg-surface-2/80">
+                            <TableRow className="hover:bg-transparent">
+                                <TableHead className="w-[300px] py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Tenant</TableHead>
+                                <TableHead className="py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Plan</TableHead>
+                                <TableHead className="py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Status</TableHead>
+                                <TableHead className="py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Outlets</TableHead>
+                                <TableHead className="py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Tills</TableHead>
+                                <TableHead className="py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Monthly orders</TableHead>
+                                <TableHead className="py-4 text-right text-xs font-bold uppercase tracking-wider text-muted-foreground">Actions</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {tenants.map((t) => (
+                                <TableRow key={t.id} className="group transition-all duration-300 hover:bg-primary/[0.03] hover:shadow-sm">
+                                <TableCell className="p-5">
+                                    <div className="text-[15px] font-extrabold text-ink transition-colors group-hover:text-primary">{t.name}</div>
+                                    <div className="mt-1 flex items-center gap-2 text-xs font-semibold text-muted-foreground">
+                                        <span className="flex h-2 w-2 rounded-full bg-primary/40"></span>
+                                        TRN {t.trn}
+                                    </div>
+                                </TableCell>
+                                <TableCell className="p-5">
+                                    <Badge variant="secondary" className="rounded-xl px-3 py-1 text-[11px] uppercase tracking-wider font-extrabold bg-secondary text-secondary-foreground shadow-sm">
+                                        {t.plan}
+                                    </Badge>
+                                </TableCell>
+                                <TableCell className="p-5">
+                                    <span className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-1 text-[11px] uppercase tracking-wider font-extrabold shadow-sm ${statusTone[t.status]}`}>
+                                        <span className="h-1.5 w-1.5 rounded-full bg-current opacity-70"></span>
+                                        {t.status}
+                                    </span>
+                                </TableCell>
+                                <TableCell className="p-5 text-center text-sm font-extrabold tabular-nums text-ink">{t.outlets}</TableCell>
+                                <TableCell className="p-5 text-center text-sm font-extrabold tabular-nums text-ink">{t.tills}</TableCell>
+                                <TableCell className="p-5 text-center">
+                                    <div className="inline-block rounded-xl bg-primary/10 px-3 py-1 text-sm font-extrabold tabular-nums text-primary shadow-sm">
+                                        {t.monthlyOrders.toLocaleString("en-AE")}
+                                    </div>
+                                </TableCell>
+                                <TableCell className="p-5">
+                                    <div className="flex justify-end gap-2 opacity-80 transition-opacity group-hover:opacity-100">
+                                        <Button
+                                            size="sm"
+                                            variant="default"
+                                            className="rounded-xl font-bold shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5"
+                                            onClick={() => upgrade(t.id)}
+                                            disabled={t.plan === "Enterprise"}
+                                        >
+                                            <ArrowUpCircle className="mr-1.5 h-4 w-4" /> Upgrade
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            className="rounded-xl font-bold hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 transition-colors"
+                                            onClick={() => toggleStatus(t.id)}
+                                        >
+                                            <Ban className="mr-1.5 h-4 w-4" />
+                                            {t.status === "Suspended" ? "Reactivate" : "Suspend"}
+                                        </Button>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TabsContent>
 
                 <TabsContent value="analytics" className="mt-5">
                     <div className="grid gap-5 lg:grid-cols-2">
