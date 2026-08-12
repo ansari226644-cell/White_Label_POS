@@ -177,6 +177,24 @@ export const aggOrders: AggOrder[] = [
     { id: "DLV-55028", channel: "Deliveroo", customer: "K. Thomas", items: 9, total: 174.3, branch: "Corniche", minutesAgo: 9, status: "Ready" },
 ];
 
+export type Promotion = {
+    id: string;
+    name: string;
+    type: "Discount" | "BOGO" | "Bundle";
+    target: string;
+    value: string;
+    status: "Active" | "Scheduled" | "Expired";
+    startDate: string;
+    endDate: string;
+};
+
+export const promotions: Promotion[] = [
+    { id: "PRM-101", name: "Weekend Produce Sale", type: "Discount", target: "Fresh Produce Category", value: "15% off", status: "Active", startDate: "2026-08-10", endDate: "2026-08-15" },
+    { id: "PRM-102", name: "Buy 1 Get 1 Laban", type: "BOGO", target: "SKU-10388 (Laban 1L)", value: "Free Item", status: "Active", startDate: "2026-08-01", endDate: "2026-08-31" },
+    { id: "PRM-103", name: "Back to School Lunch Bundle", type: "Bundle", target: "Bread, Cheese, Juice", value: "AED 15 Flat", status: "Scheduled", startDate: "2026-08-25", endDate: "2026-09-10" },
+    { id: "PRM-104", name: "Clearance: Dates", type: "Discount", target: "SKU-10733", value: "25% off", status: "Active", startDate: "2026-08-12", endDate: "2026-08-19" },
+];
+
 export const aed = (n: number) =>
     `AED ${n.toLocaleString("en-AE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 

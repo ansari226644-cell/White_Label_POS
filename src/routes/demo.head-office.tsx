@@ -11,6 +11,7 @@ import {
   Star,
   TrendingUp,
   Users,
+  Tag,
 } from "lucide-react";
 import {
   Bar,
@@ -39,6 +40,7 @@ import {
   products,
   purchases,
   roles,
+  promotions,
 } from "@/lib/demo-data";
 import { toast } from "sonner";
 
@@ -110,6 +112,7 @@ function HeadOffice() {
           <TabsTrigger value="roles">Roles</TabsTrigger>
           <TabsTrigger value="vat">VAT</TabsTrigger>
           <TabsTrigger value="loyalty">Loyalty</TabsTrigger>
+          <TabsTrigger value="promotions">Promotions</TabsTrigger>
         </TabsList>
 
         <TabsContent value="outlets" className="mt-5 space-y-5">
@@ -433,6 +436,66 @@ function HeadOffice() {
                       >
                         Issue voucher
                       </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="promotions" className="mt-5">
+          <div className="flex items-center gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4 mb-5">
+            <Tag className="h-5 w-5 text-primary" />
+            <p className="text-sm font-medium text-ink">
+              Dynamic pricing engine active. Bundle discounts are automatically evaluated at checkout.
+            </p>
+            <Button
+              size="sm"
+              className="ml-auto rounded-lg"
+              onClick={() => toast.success("New promotion campaign drafted")}
+            >
+              Create Campaign
+            </Button>
+          </div>
+          <div className="panel overflow-x-auto">
+            <Table className="min-w-[800px]">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Campaign Name</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Target</TableHead>
+                  <TableHead>Value</TableHead>
+                  <TableHead>Start Date</TableHead>
+                  <TableHead>End Date</TableHead>
+                  <TableHead className="text-right">Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {promotions.map((p) => (
+                  <TableRow key={p.id}>
+                    <TableCell className="font-semibold text-ink">{p.name}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="rounded-full">
+                        {p.type}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-sm">{p.target}</TableCell>
+                    <TableCell className="font-medium text-ink">{p.value}</TableCell>
+                    <TableCell className="tabular-nums text-muted-foreground">{p.startDate}</TableCell>
+                    <TableCell className="tabular-nums text-muted-foreground">{p.endDate}</TableCell>
+                    <TableCell className="text-right">
+                      <span
+                        className={`inline-flex rounded-full border px-2.5 py-1 text-[11px] font-bold ${
+                          p.status === "Active"
+                            ? "border-success/20 bg-success/12 text-success"
+                            : p.status === "Scheduled"
+                              ? "border-warning/30 bg-warning/15 text-warning-foreground"
+                              : "border-border bg-surface-2 text-muted-foreground"
+                        }`}
+                      >
+                        {p.status}
+                      </span>
                     </TableCell>
                   </TableRow>
                 ))}
