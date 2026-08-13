@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * MT Nexus design system — light only.
+ * cloudynationpos design system — light only.
  * Ink navy text, azure primary, warm amber highlight, mint success.
  */
 
@@ -70,22 +70,22 @@
   --radius: 0.875rem;
   --background: oklch(0.995 0.003 250);
   --foreground: oklch(0.23 0.035 255);
-  --ink: oklch(0.19 0.04 258);
+  --ink: #111827;
   --surface: oklch(1 0 0);
   --surface-2: oklch(0.975 0.008 250);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.23 0.035 255);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.23 0.035 255);
-  --primary: oklch(0.55 0.17 249);
-  --primary-foreground: oklch(0.995 0.005 250);
+  --primary: #22C55E;
+  --primary-foreground: #FFFFFF;
   --secondary: oklch(0.965 0.012 248);
   --secondary-foreground: oklch(0.28 0.04 255);
   --muted: oklch(0.968 0.008 250);
   --muted-foreground: oklch(0.52 0.028 254);
-  --accent: oklch(0.8 0.145 78);
-  --accent-foreground: oklch(0.26 0.05 70);
-  --success: oklch(0.68 0.14 165);
+  --accent: #16A34A;
+  --accent-foreground: #FFFFFF;
+  --success: #4ADE80;
   --success-foreground: oklch(0.99 0.01 165);
   --warning: oklch(0.8 0.15 75);
   --warning-foreground: oklch(0.28 0.06 70);
@@ -93,20 +93,20 @@
   --destructive-foreground: oklch(0.99 0.005 250);
   --border: oklch(0.916 0.012 250);
   --input: oklch(0.916 0.012 250);
-  --ring: oklch(0.55 0.17 249);
-  --chart-1: oklch(0.55 0.17 249);
-  --chart-2: oklch(0.68 0.14 165);
-  --chart-3: oklch(0.8 0.145 78);
+  --ring: #22C55E;
+  --chart-1: #22C55E;
+  --chart-2: #4ADE80;
+  --chart-3: #16A34A;
   --chart-4: oklch(0.66 0.13 215);
   --chart-5: oklch(0.72 0.12 300);
   --sidebar: oklch(1 0 0);
   --sidebar-foreground: oklch(0.28 0.035 255);
-  --sidebar-primary: oklch(0.55 0.17 249);
-  --sidebar-primary-foreground: oklch(0.995 0.005 250);
+  --sidebar-primary: #22C55E;
+  --sidebar-primary-foreground: #FFFFFF;
   --sidebar-accent: oklch(0.968 0.012 249);
   --sidebar-accent-foreground: oklch(0.3 0.05 250);
   --sidebar-border: oklch(0.92 0.012 250);
-  --sidebar-ring: oklch(0.55 0.17 249);
+  --sidebar-ring: #22C55E;
 }
 
 /* Light-only product: the dark class intentionally mirrors the light palette. */
@@ -138,17 +138,17 @@
 
 @utility bg-mesh {
   background-image:
-    radial-gradient(60rem 40rem at 12% -10%, oklch(0.55 0.17 249 / 0.13), transparent 60%),
-    radial-gradient(45rem 30rem at 95% 5%, oklch(0.8 0.145 78 / 0.16), transparent 60%),
-    radial-gradient(50rem 35rem at 60% 100%, oklch(0.68 0.14 165 / 0.1), transparent 65%);
+    radial-gradient(60rem 40rem at 12% -10%, rgba(34, 197, 94, 0.13), transparent 60%),
+    radial-gradient(45rem 30rem at 95% 5%, rgba(22, 163, 74, 0.16), transparent 60%),
+    radial-gradient(50rem 35rem at 60% 100%, rgba(74, 222, 128, 0.1), transparent 65%);
 }
 
 @utility text-gradient {
   background-image: linear-gradient(
     100deg,
-    oklch(0.42 0.13 255),
-    oklch(0.55 0.17 249) 45%,
-    oklch(0.66 0.13 200)
+    #16A34A,
+    #22C55E 45%,
+    #15803D
   );
   background-clip: text;
   color: transparent;

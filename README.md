@@ -1,4 +1,4 @@
-# MT Nexus - White-Label Multi-Tenant POS Platform
+# cloudynationpos - White-Label Multi-Tenant POS Platform
 
 Multi-tenant POS platform built for UAE supermarket chains and retail outlets.
 

@@ -57,16 +57,19 @@ export function DashboardMock({ className }: { className?: string }) {
                             </span>
                         </div>
                         <div className="flex h-24 items-end gap-1.5">
-                            {bars.map((b, i) => (
+                        {bars.map((b, i) => {
+                            const isUp = i === 0 || b >= bars[i - 1];
+                            return (
                                 <div
                                     key={i}
                                     style={{ height: `${b}%` }}
                                     className={cn(
                                         "flex-1 rounded-t-md",
-                                        i % 4 === 3 ? "bg-accent/70" : "bg-primary/70",
+                                        isUp ? "bg-[#22c55e]" : "bg-[#ef4444]"
                                     )}
                                 />
-                            ))}
+                            );
+                        })}
                         </div>
                     </div>
                     <div className="space-y-1.5 rounded-xl border border-border p-3">
@@ -89,7 +92,14 @@ export function DashboardMock({ className }: { className?: string }) {
 }
 
 export function TillMock({ className }: { className?: string }) {
-    const items = ["Bananas 1kg", "Laban 1L", "Arabic Bread", "Chicken 900g", "Basmati 5kg", "Dates"];
+    const items = [
+        { name: "Bananas 1kg", image: "https://images.unsplash.com/photo-1528825871115-3581a5387919?w=100&q=80" },
+        { name: "Laban 1L", image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=100&q=80" },
+        { name: "Arabic Bread", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=100&q=80" },
+        { name: "Chicken 900g", image: "https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=100&q=80" },
+        { name: "Basmati 5kg", image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=100&q=80" },
+        { name: "Dates", image: "https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?w=100&q=80" },
+    ];
     return (
         <div
             className={cn(
@@ -107,11 +117,13 @@ export function TillMock({ className }: { className?: string }) {
                 <div className="grid grid-cols-3 gap-2">
                     {items.map((i) => (
                         <div
-                            key={i}
+                            key={i.name}
                             className="rounded-xl border border-border bg-surface-2 p-2.5 text-center font-medium text-ink"
                         >
-                            <div className="mx-auto mb-2 h-8 w-8 rounded-lg bg-primary/12" />
-                            {i}
+                            <div className="mx-auto mb-2 h-8 w-8 overflow-hidden rounded-full border-border bg-surface shadow-sm">
+                                <img src={i.image} alt={i.name} className="h-full w-full object-cover" />
+                            </div>
+                            {i.name}
                         </div>
                     ))}
                 </div>

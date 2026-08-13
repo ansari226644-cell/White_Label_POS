@@ -12,13 +12,13 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/demo/aggregators")({
   head: () => ({
     meta: [
-      { title: "Aggregator Sync Engine Demo — MT Nexus" },
+      { title: "Aggregator Sync Engine Demo — cloudynationpos" },
       {
         name: "description",
         content:
-          "Interactive demo of the MT Nexus aggregator sync engine: unified Talabat, Careem, InstaShop and Deliveroo order queue, stock auto-sync and one-click menu publishing.",
+          "Interactive demo of the cloudynationpos aggregator sync engine: unified Talabat, Careem, InstaShop and Deliveroo order queue, stock auto-sync and one-click menu publishing.",
       },
-      { property: "og:title", content: "MT Nexus Aggregator Sync Engine Demo" },
+      { property: "og:title", content: "cloudynationpos Aggregator Sync Engine Demo" },
       { property: "og:description", content: "Unified delivery orders, live stock sync and a per-branch API vault." },
     ],
   }),

@@ -10,13 +10,13 @@ import { Switch } from "@/components/ui/switch";
 export const Route = createFileRoute("/pricing")({
     head: () => ({
         meta: [
-            { title: "Pricing — MT Nexus POS for UAE Supermarket Chains" },
+            { title: "Pricing — cloudynationpos POS for UAE Supermarket Chains" },
             {
                 name: "description",
                 content:
-                    "Transparent MT Nexus pricing per outlet and till. Starter, Growth and Enterprise tiers — all include UAE VAT compliance, offline tills and aggregator sync.",
+                    "Transparent cloudynationpos pricing per outlet and till. Starter, Growth and Enterprise tiers — all include UAE VAT compliance, offline tills and aggregator sync.",
             },
-            { property: "og:title", content: "MT Nexus Pricing — Per Outlet, Per Till" },
+            { property: "og:title", content: "cloudynationpos Pricing — Per Outlet, Per Till" },
             {
                 property: "og:description",
                 content: "Starter, Growth and Enterprise plans for supermarket chains of every size.",

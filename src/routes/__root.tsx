@@ -74,14 +74,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "MT Nexus — White-Label Multi-Tenant POS Platform" },
+      { title: "cloudynationpos — White-Label Multi-Tenant POS Platform" },
       {
         name: "description",
         content:
-          "MT Nexus is a white-label, multi-tenant POS platform for UAE supermarket chains: offline-first tills, VAT compliance and aggregator sync.",
+          "cloudynationpos is a white-label, multi-tenant POS platform for UAE supermarket chains: offline-first tills, VAT compliance and aggregator sync.",
       },
-      { name: "author", content: "MT Nexus" },
-      { property: "og:title", content: "MT Nexus — White-Label Multi-Tenant POS Platform" },
+      { name: "author", content: "cloudynationpos" },
+      { property: "og:title", content: "cloudynationpos — White-Label Multi-Tenant POS Platform" },
       {
         property: "og:description",
         content: "One platform for every branch, till and delivery aggregator in the UAE.",

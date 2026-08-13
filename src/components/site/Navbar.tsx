@@ -18,7 +18,7 @@ export function Navbar() {
     return (
         <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur-xl">
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:px-8">
-                <Link to="/" aria-label="MT Nexus home">
+                <Link to="/" aria-label="cloudynationpos home">
                     <Logo />
                 </Link>
 

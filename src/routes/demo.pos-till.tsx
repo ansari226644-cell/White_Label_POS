@@ -33,13 +33,13 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/demo/pos-till")({
     head: () => ({
         meta: [
-            { title: "POS Till Terminal Demo — MT Nexus" },
+            { title: "POS Till Terminal Demo — cloudynationpos" },
             {
                 name: "description",
                 content:
-                    "Try the MT Nexus cashier till: touch checkout, barcode search, VAT breakdown, split payments across cash, card, loyalty and store credit, plus offline mode and X/Z reports.",
+                    "Try the cloudynationpos cashier till: touch checkout, barcode search, VAT breakdown, split payments across cash, card, loyalty and store credit, plus offline mode and X/Z reports.",
             },
-            { property: "og:title", content: "MT Nexus POS Till Terminal Demo" },
+            { property: "og:title", content: "cloudynationpos POS Till Terminal Demo" },
             { property: "og:description", content: "Touch-first checkout that keeps billing during outages." },
         ],
     }),

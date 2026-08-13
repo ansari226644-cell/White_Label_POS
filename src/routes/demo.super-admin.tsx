@@ -16,6 +16,7 @@ import {
     Bar,
     BarChart,
     CartesianGrid,
+    Cell,
     Line,
     LineChart,
     ResponsiveContainer,
@@ -46,13 +47,13 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/demo/super-admin")({
     head: () => ({
         meta: [
-            { title: "Super Admin Portal Demo — MT Nexus" },
+            { title: "Super Admin Portal Demo — cloudynationpos" },
             {
                 name: "description",
                 content:
-                    "Interactive MT Nexus super-admin demo: provision tenants, enforce outlet and till limits, set VAT templates and monitor platform analytics.",
+                    "Interactive cloudynationpos super-admin demo: provision tenants, enforce outlet and till limits, set VAT templates and monitor platform analytics.",
             },
-            { property: "og:title", content: "MT Nexus Super Admin Portal Demo" },
+            { property: "og:title", content: "cloudynationpos Super Admin Portal Demo" },
             { property: "og:description", content: "Multi-tenant provisioning, limits and platform analytics." },
         ],
     }),
@@ -316,7 +317,12 @@ function SuperAdmin() {
                                         <XAxis dataKey="t" tickLine={false} axisLine={false} fontSize={12} />
                                         <YAxis tickLine={false} axisLine={false} fontSize={12} width={36} />
                                         <Tooltip />
-                                        <Bar dataKey="tills" fill="var(--chart-2)" radius={[6, 6, 0, 0]} />
+                                        <Bar dataKey="tills" radius={[6, 6, 0, 0]}>
+                                            {platformSeries.map((entry, index) => {
+                                                const isUp = index === 0 || entry.tills >= platformSeries[index - 1].tills;
+                                                return <Cell key={`cell-${index}`} fill={isUp ? "#22c55e" : "#ef4444"} />;
+                                            })}
+                                        </Bar>
                                     </BarChart>
                                 </ResponsiveContainer>
                             </div>

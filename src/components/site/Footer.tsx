@@ -104,7 +104,7 @@ export function Footer() {
 
             <div className="border-t border-border">
                 <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between lg:px-8">
-                    <p>© {new Date().getFullYear()} MT Nexus. All rights reserved.</p>
+                    <p>© {new Date().getFullYear()} cloudynationpos. All rights reserved.</p>
                     <p>TRN-ready invoicing · FTA compliant reporting · Hosted in the UAE</p>
                 </div>
             </div>
