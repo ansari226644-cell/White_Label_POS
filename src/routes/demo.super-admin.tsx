@@ -320,7 +320,7 @@ function SuperAdmin() {
                                         <Bar dataKey="tills" radius={[6, 6, 0, 0]}>
                                             {platformSeries.map((entry, index) => {
                                                 const isUp = index === 0 || entry.tills >= platformSeries[index - 1].tills;
-                                                return <Cell key={`cell-${index}`} fill={isUp ? "#22c55e" : "#ef4444"} />;
+                                                return <Cell key={`cell-${index}`} fill={isUp ? "#39ff14" : "#ef4444"} />;
                                             })}
                                         </Bar>
                                     </BarChart>

@@ -177,8 +177,8 @@ function Hero() {
         <section className="relative overflow-hidden bg-mesh">
             <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 pt-16 pb-20 lg:grid-cols-[1fr_1.05fr] lg:px-8 lg:pt-24 lg:pb-28">
                 <Reveal>
-                    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-3.5 py-1.5 text-xs font-semibold text-primary shadow-[var(--shadow-soft)]">
-                        <span className="h-1.5 w-1.5 rounded-full bg-success" />
+                    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-3.5 py-1.5 text-xs font-semibold text-[#1ea80c] shadow-[var(--shadow-soft)]">
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                         Built for UAE supermarket chains
                     </span>
                     <h1 className="mt-6 text-4xl leading-[1.05] font-extrabold text-ink sm:text-5xl lg:text-6xl">
@@ -271,7 +271,7 @@ function SectionHead({
 }) {
     return (
         <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-bold tracking-[0.18em] text-primary uppercase">{eyebrow}</p>
+            <p className="text-xs font-bold tracking-[0.18em] text-[#1ea80c] uppercase">{eyebrow}</p>
             <h2 className="mt-3 text-3xl font-extrabold text-ink sm:text-4xl">{title}</h2>
             {copy && <p className="mt-4 text-base leading-relaxed text-muted-foreground">{copy}</p>}
         </div>
@@ -331,7 +331,7 @@ function DeepDives() {
                             className={`grid items-center gap-12 lg:grid-cols-2 ${i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}
                         >
                             <div>
-                                <p className="text-xs font-bold tracking-[0.18em] text-primary uppercase">{d.tag}</p>
+                                <p className="text-xs font-bold tracking-[0.18em] text-[#1ea80c] uppercase">{d.tag}</p>
                                 <h2 className="mt-3 text-3xl font-extrabold text-ink">{d.title}</h2>
                                 <p className="mt-4 text-base leading-relaxed text-muted-foreground">{d.copy}</p>
                                 <ul className="mt-6 space-y-3">
@@ -651,7 +651,7 @@ function Contact() {
         <section id="contact" className="border-t border-border bg-mesh py-20 lg:py-28">
             <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-2 lg:px-8">
                 <Reveal>
-                    <p className="text-xs font-bold tracking-[0.18em] text-primary uppercase">Book a demo</p>
+                    <p className="text-xs font-bold tracking-[0.18em] text-[#1ea80c] uppercase">Book a demo</p>
                     <h2 className="mt-3 text-3xl font-extrabold text-ink sm:text-4xl">
                         See cloudynationpos running your store
                     </h2>

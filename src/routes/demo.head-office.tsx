@@ -147,22 +147,22 @@ function HeadOffice() {
                   <YAxis tickLine={false} axisLine={false} fontSize={12} width={36} />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="Al Barsha" fill="#22c55e" radius={[6, 6, 0, 0]}>
+                  <Bar dataKey="Al Barsha" fill="#39ff14" radius={[6, 6, 0, 0]}>
                     {branchTrend.map((entry, index) => {
                       const isUp = index === 0 || entry["Al Barsha"] >= branchTrend[index - 1]["Al Barsha"];
-                      return <Cell key={`cell-ab-${index}`} fill={isUp ? "#22c55e" : "#ef4444"} />;
+                      return <Cell key={`cell-ab-${index}`} fill={isUp ? "#39ff14" : "#ef4444"} />;
                     })}
                   </Bar>
-                  <Bar dataKey="Deira" fill="#16a34a" radius={[6, 6, 0, 0]}>
+                  <Bar dataKey="Deira" fill="#39ff14" radius={[6, 6, 0, 0]}>
                     {branchTrend.map((entry, index) => {
                       const isUp = index === 0 || entry["Deira"] >= branchTrend[index - 1]["Deira"];
-                      return <Cell key={`cell-d-${index}`} fill={isUp ? "#16a34a" : "#ef4444"} />;
+                      return <Cell key={`cell-d-${index}`} fill={isUp ? "#39ff14" : "#ef4444"} />;
                     })}
                   </Bar>
-                  <Bar dataKey="Corniche" fill="#15803d" radius={[6, 6, 0, 0]}>
+                  <Bar dataKey="Corniche" fill="#39ff14" radius={[6, 6, 0, 0]}>
                     {branchTrend.map((entry, index) => {
                       const isUp = index === 0 || entry["Corniche"] >= branchTrend[index - 1]["Corniche"];
-                      return <Cell key={`cell-c-${index}`} fill={isUp ? "#15803d" : "#ef4444"} />;
+                      return <Cell key={`cell-c-${index}`} fill={isUp ? "#39ff14" : "#ef4444"} />;
                     })}
                   </Bar>
                 </BarChart>

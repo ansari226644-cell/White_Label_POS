@@ -98,7 +98,7 @@ function PricingPage() {
                 <section className="bg-mesh py-16 lg:py-24">
                     <div className="mx-auto max-w-3xl px-5 text-center lg:px-8">
                         <Reveal>
-                            <p className="text-xs font-bold tracking-[0.18em] text-primary uppercase">Pricing</p>
+                            <p className="text-xs font-bold tracking-[0.18em] text-[#1ea80c] uppercase">Pricing</p>
                             <h1 className="mt-3 text-4xl font-extrabold text-ink sm:text-5xl">
                                 Scales with your outlets, not your paperwork
                             </h1>

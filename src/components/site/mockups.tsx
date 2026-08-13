@@ -65,7 +65,7 @@ export function DashboardMock({ className }: { className?: string }) {
                                     style={{ height: `${b}%` }}
                                     className={cn(
                                         "flex-1 rounded-t-md",
-                                        isUp ? "bg-[#22c55e]" : "bg-[#ef4444]"
+                                        isUp ? "bg-[#39ff14]" : "bg-[#ef4444]"
                                     )}
                                 />
                             );
