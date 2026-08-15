@@ -10,6 +10,7 @@ import {
     ShieldCheck,
     Ban,
     ArrowUpCircle,
+    Trash2,
 } from "lucide-react";
 import {
     Area,
@@ -42,6 +43,8 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { initialTenants, platformSeries, aedShort, type Tenant } from "@/lib/demo-data";
 import { toast } from "sonner";
 
@@ -53,7 +56,7 @@ export const Route = createFileRoute("/super-admin")({
     },
     head: () => ({
         meta: [
-            { title: "Super Admin Portal Demo — cloudynationpos" },
+            { title: "Super Admin Portal Demo â€” cloudynationpos" },
             {
                 name: "description",
                 content:
@@ -78,6 +81,26 @@ function SuperAdmin() {
     const [form, setForm] = useState({ name: "", outlets: 2, tills: 6, trn: "" });
     const [vatRate, setVatRate] = useState("5");
     const [inclusive, setInclusive] = useState(true);
+
+    type Branch = { id: string; tenantId: string; name: string; location: string; status: string; createdAt: string };
+    
+    const [branches, setBranches] = useState<Branch[]>(() => initialTenants.flatMap(t => 
+        Array.from({ length: t.outlets }).map((_, i) => ({
+            id: `b-${t.id}-${i}`,
+            tenantId: t.id,
+            name: `${t.name} - Branch ${i + 1}`,
+            location: ["Dubai", "Abu Dhabi", "Sharjah"][i % 3],
+            status: i % 5 === 0 ? "Suspended" : "Active",
+            createdAt: new Date().toISOString().split('T')[0]
+        }))
+    ));
+    
+    // Manage Branches dialog state
+    const [manageTenant, setManageTenant] = useState<Tenant | null>(null);
+    const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
+    const [newBranchForm, setNewBranchForm] = useState({ name: "", location: "" });
+    const [branchToDelete, setBranchToDelete] = useState<string | null>(null);
+
 
     const totals = useMemo(
         () => ({
@@ -109,17 +132,70 @@ function SuperAdmin() {
         toast.success("Plan upgraded");
     };
 
+    const handleManageBranches = (tenant: Tenant) => {
+        setManageTenant(tenant);
+        setNewBranchForm({ name: "", location: "" });
+        setSelectedBranch(null);
+    };
+
+    const addBranch = () => {
+        if (!manageTenant) return;
+        const currentBranches = branches.filter(b => b.tenantId === manageTenant.id);
+        
+        if (currentBranches.length >= (manageTenant.plan === "Enterprise" ? 999 : 10)) {
+            toast.error("Outlet limit reached â€” upgrade plan to add more branches");
+            return;
+        }
+
+        if (!newBranchForm.name.trim() || !newBranchForm.location.trim()) {
+            toast.error("Please fill all fields");
+            return;
+        }
+
+        const newBranch: Branch = {
+            id: `b-${Math.random().toString(36).slice(2, 6)}`,
+            tenantId: manageTenant.id,
+            name: newBranchForm.name,
+            location: newBranchForm.location,
+            status: "Active",
+            createdAt: new Date().toISOString().split('T')[0]
+        };
+
+        setBranches(prev => [...prev, newBranch]);
+        
+        setTenants(prev => prev.map(t => 
+            t.id === manageTenant.id ? { ...t, outlets: t.outlets + 1 } : t
+        ));
+        
+        setNewBranchForm({ name: "", location: "" });
+        toast.success("Branch added successfully");
+    };
+
+    const confirmRemoveBranch = () => {
+        if (!manageTenant || !branchToDelete) return;
+
+        setBranches(prev => prev.filter(b => b.id !== branchToDelete));
+        
+        setTenants(prev => prev.map(t => 
+            t.id === manageTenant.id ? { ...t, outlets: Math.max(0, t.outlets - 1) } : t
+        ));
+
+        toast.success("Branch removed");
+        setBranchToDelete(null);
+        setSelectedBranch(null);
+    };
+
     return (
         <DemoShell
             title="SaaS Super-Admin Portal"
-            subtitle="Provision and govern every supermarket tenant on the platform — limits, tax templates and live network telemetry."
+            subtitle="Provision and govern every supermarket tenant on the platform â€” limits, tax templates and live network telemetry."
             actions={
                 <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger asChild>
-                        <Button className="rounded-xl font-semibold">
-                            <Plus className="mr-1.5 h-4 w-4" /> Create tenant
-                        </Button>
-                    </DialogTrigger>
+                            <Button className="rounded-xl font-semibold shadow-sm hover:-translate-y-0.5 transition-all">
+                                <Plus className="mr-1.5 h-4 w-4" /> Create tenant
+                            </Button>
+                        </DialogTrigger>
                     <DialogContent className="sm:max-w-lg">
                         <DialogHeader>
                             <DialogTitle>Create tenant account</DialogTitle>
@@ -169,8 +245,8 @@ function SuperAdmin() {
                                 />
                             </div>
                             <p className="rounded-lg bg-surface-2 p-3 text-xs text-muted-foreground">
-                                Tax template applied on creation: UAE VAT {vatRate}% ·{" "}
-                                {inclusive ? "inclusive" : "exclusive"} pricing · AED
+                                Tax template applied on creation: UAE VAT {vatRate}% Â·{" "}
+                                {inclusive ? "inclusive" : "exclusive"} pricing Â· AED
                             </p>
                         </div>
                         <DialogFooter>
@@ -278,6 +354,14 @@ function SuperAdmin() {
                                         <Button
                                             size="sm"
                                             variant="outline"
+                                            className="rounded-xl font-bold hover:bg-primary/10 hover:text-primary border-primary/20 transition-colors"
+                                            onClick={() => handleManageBranches(t)}
+                                        >
+                                            Branches
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
                                             className="rounded-xl font-bold hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 transition-colors"
                                             onClick={() => toggleStatus(t.id)}
                                         >
@@ -354,7 +438,7 @@ function SuperAdmin() {
                                     ["12:04:11", "INFO", "tenant t-005 published catalog to 4 aggregators"],
                                     ["12:03:58", "WARN", "till DEIRA-11 entered offline buffering mode"],
                                     ["12:02:40", "INFO", "VAT template UAE-5 applied to tenant t-003"],
-                                    ["12:01:12", "INFO", "GRN variance alert raised · PO-4821"],
+                                    ["12:01:12", "INFO", "GRN variance alert raised Â· PO-4821"],
                                     ["11:59:03", "INFO", "nightly Z-report archived for 132 tills"],
                                 ].map(([time, lvl, msg]) => (
                                     <li key={String(msg)} className="flex gap-3 rounded-lg bg-surface-2 px-3 py-2">
@@ -389,9 +473,9 @@ function SuperAdmin() {
                                 <div className="rounded-xl border border-border p-4 text-sm">
                                     <p className="font-semibold text-ink">Templates</p>
                                     <ul className="mt-2 space-y-1.5 text-muted-foreground">
-                                        <li>UAE VAT Standard — {vatRate}%</li>
-                                        <li>UAE Zero-rated — 0% (basic food, exports)</li>
-                                        <li>Out of scope — exempt supplies</li>
+                                        <li>UAE VAT Standard â€” {vatRate}%</li>
+                                        <li>UAE Zero-rated â€” 0% (basic food, exports)</li>
+                                        <li>Out of scope â€” exempt supplies</li>
                                     </ul>
                                 </div>
                                 <Button className="rounded-xl" onClick={() => toast.success("Tax template saved")}>
@@ -403,9 +487,9 @@ function SuperAdmin() {
                             <h2 className="text-sm font-bold text-ink">Regional & currency settings</h2>
                             <div className="mt-5 space-y-3 text-sm">
                                 {[
-                                    ["Base currency", "AED — UAE Dirham"],
+                                    ["Base currency", "AED â€” UAE Dirham"],
                                     ["Rounding", "Nearest 0.25 AED (cash)"],
-                                    ["Fiscal calendar", "January – December"],
+                                    ["Fiscal calendar", "January â€“ December"],
                                     ["Timezone", "Asia/Dubai (GMT+4)"],
                                     ["Data residency", "UAE region"],
                                 ].map(([k, v]) => (
@@ -423,6 +507,132 @@ function SuperAdmin() {
                     </div>
                 </TabsContent>
             </Tabs>
+
+            <Dialog open={!!manageTenant && !selectedBranch} onOpenChange={(o) => !o && setManageTenant(null)}>
+                <DialogContent className="sm:max-w-lg w-[95vw] sm:w-full p-4 sm:p-6">
+                    <DialogHeader>
+                        <DialogTitle className="text-base">Manage Branches — {manageTenant?.name}</DialogTitle>
+                        <DialogDescription className="text-xs">
+                            View and manage branches for this specific tenant.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-2 mb-4 bg-surface-2 p-3 rounded-xl border border-border/50">
+                        <Input 
+                            placeholder="Branch Name" 
+                            value={newBranchForm.name}
+                            onChange={(e) => setNewBranchForm({...newBranchForm, name: e.target.value})}
+                            className="bg-surface-1 flex-1 text-sm"
+                        />
+                        <Input 
+                            placeholder="Location" 
+                            value={newBranchForm.location}
+                            onChange={(e) => setNewBranchForm({...newBranchForm, location: e.target.value})}
+                            className="bg-surface-1 flex-1 text-sm"
+                        />
+                        <Button className="shrink-0 rounded-xl font-bold bg-primary text-primary-foreground hover:bg-primary/90 px-3 py-2 text-sm" onClick={addBranch}>
+                            Add Branch
+                        </Button>
+                    </div>
+                    <div className="max-h-[300px] overflow-auto border border-border/50 rounded-xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                        <Table className="min-w-[400px] sm:min-w-full">
+                            <TableHeader className="bg-surface-2/80 sticky top-0 z-10">
+                                <TableRow className="hover:bg-transparent">
+                                    <TableHead className="font-bold text-[11px] sm:text-xs uppercase tracking-wider">Name</TableHead>
+                                    <TableHead className="font-bold text-[11px] sm:text-xs uppercase tracking-wider">Status</TableHead>
+                                    <TableHead className="font-bold text-[11px] sm:text-xs uppercase tracking-wider text-right">Actions</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {branches.filter(b => b.tenantId === manageTenant?.id).map((b) => (
+                                    <TableRow key={b.id} className="cursor-pointer hover:bg-primary/[0.03] transition-colors" onClick={() => setSelectedBranch(b)}>
+                                        <TableCell className="p-3 font-semibold text-ink text-sm">{b.name}</TableCell>
+                                        <TableCell className="p-3">
+                                            <Badge variant="secondary" className="rounded-xl text-[10px] uppercase tracking-wider font-extrabold bg-success/10 text-success shadow-sm">
+                                                {b.status}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className="p-3 text-right">
+                                            <Button 
+                                                size="sm" 
+                                                className="h-8 rounded-xl font-bold bg-surface-2 text-ink hover:bg-primary hover:text-primary-foreground border border-border/50 shadow-sm transition-all"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setSelectedBranch(b);
+                                                }}
+                                            >
+                                                View Details
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                                {branches.filter(b => b.tenantId === manageTenant?.id).length === 0 && (
+                                    <TableRow>
+                                        <TableCell colSpan={3} className="py-6 text-center text-muted-foreground font-semibold">
+                                            No branches found.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </div>
+                    <DialogFooter className="mt-4">
+                        <Button variant="outline" className="rounded-xl" onClick={() => setManageTenant(null)}>Close</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            <Dialog open={!!selectedBranch} onOpenChange={(o) => !o && setSelectedBranch(null)}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>Branch Details</DialogTitle>
+                    </DialogHeader>
+                    {selectedBranch && (
+                        <div className="space-y-4 py-4">
+                            <div className="flex justify-between items-center bg-surface-2 p-4 rounded-xl border border-border/50">
+                                <div>
+                                    <p className="text-muted-foreground text-xs uppercase tracking-wider font-bold mb-1">Branch Name</p>
+                                    <h3 className="text-lg font-extrabold text-ink">{selectedBranch.name}</h3>
+                                </div>
+                                <Badge variant="secondary" className="rounded-xl font-extrabold text-[11px] uppercase tracking-wider bg-success/10 text-success">
+                                    {selectedBranch.status}
+                                </Badge>
+                            </div>
+                            <div>
+                                <p className="text-muted-foreground text-xs uppercase tracking-wider font-bold mb-1">Location</p>
+                                <p className="font-semibold text-ink">{selectedBranch.location}</p>
+                            </div>
+                            <div>
+                                <p className="text-muted-foreground text-xs uppercase tracking-wider font-bold mb-1">Created At</p>
+                                <p className="font-semibold text-ink">{selectedBranch.createdAt}</p>
+                            </div>
+                            <div className="pt-4 border-t border-border/50 flex gap-3 justify-end">
+                                <Button variant="outline" className="rounded-xl" onClick={() => setSelectedBranch(null)}>Back to List</Button>
+                                <Button variant="destructive" className="rounded-xl" onClick={() => {
+                                    setBranchToDelete(selectedBranch.id);
+                                    setSelectedBranch(null);
+                                }}>
+                                    <Trash2 className="h-4 w-4 mr-2" /> Delete Branch
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                </DialogContent>
+            </Dialog>
+
+            <Dialog open={!!branchToDelete} onOpenChange={(o) => !o && setBranchToDelete(null)}>
+                <DialogContent className="sm:max-w-[400px]">
+                    <DialogHeader>
+                        <DialogTitle className="text-destructive">Confirm Deletion</DialogTitle>
+                    </DialogHeader>
+                    <p className="text-muted-foreground font-medium my-4">
+                        Are you sure you want to completely remove this branch? This action cannot be undone and will decrement the tenant's outlet limit.
+                    </p>
+                    <DialogFooter>
+                        <Button variant="outline" className="rounded-xl" onClick={() => setBranchToDelete(null)}>Cancel</Button>
+                        <Button variant="destructive" className="rounded-xl" onClick={confirmRemoveBranch}>Delete Branch</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </DemoShell>
     );
 }
