@@ -101,6 +101,8 @@ function SuperAdmin() {
     const [newBranchForm, setNewBranchForm] = useState({ name: "", location: "" });
     const [branchToDelete, setBranchToDelete] = useState<string | null>(null);
 
+    const [globalAddBranchOpen, setGlobalAddBranchOpen] = useState(false);
+    const [globalNewBranchForm, setGlobalNewBranchForm] = useState({ tenantId: "", name: "", location: "", status: "Active" });
 
 
     const totals = useMemo(
@@ -191,8 +193,12 @@ function SuperAdmin() {
             title="SaaS Super-Admin Portal"
             subtitle="Provision and govern every supermarket tenant on the platform â€” limits, tax templates and live network telemetry."
             actions={
-                <Dialog open={open} onOpenChange={setOpen}>
-                    <DialogTrigger asChild>
+                <div className="flex items-center gap-3">
+                    <Button className="rounded-xl font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:-translate-y-0.5 transition-all" onClick={() => setGlobalAddBranchOpen(true)}>
+                        <Building2 className="mr-1.5 h-4 w-4" /> Add Branch
+                    </Button>
+                    <Dialog open={open} onOpenChange={setOpen}>
+                        <DialogTrigger asChild>
                             <Button className="rounded-xl font-semibold shadow-sm hover:-translate-y-0.5 transition-all">
                                 <Plus className="mr-1.5 h-4 w-4" /> Create tenant
                             </Button>
@@ -284,6 +290,7 @@ function SuperAdmin() {
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
+                </div>
             }
         >
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -631,6 +638,101 @@ function SuperAdmin() {
                     <DialogFooter>
                         <Button variant="outline" className="rounded-xl" onClick={() => setBranchToDelete(null)}>Cancel</Button>
                         <Button variant="destructive" className="rounded-xl" onClick={confirmRemoveBranch}>Delete Branch</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            <Dialog open={globalAddBranchOpen} onOpenChange={setGlobalAddBranchOpen}>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>Add Branch</DialogTitle>
+                        <DialogDescription>
+                            Create a new branch and assign it to a tenant.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <div className="space-y-2">
+                            <Label>Tenant</Label>
+                            <Select 
+                                value={globalNewBranchForm.tenantId} 
+                                onValueChange={(val) => setGlobalNewBranchForm({...globalNewBranchForm, tenantId: val})}
+                            >
+                                <SelectTrigger className="rounded-xl border-border/50 bg-surface-2">
+                                    <SelectValue placeholder="Select a tenant" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {tenants.map(t => (
+                                        <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label>Branch Name</Label>
+                                <Input 
+                                    placeholder="e.g. Marina Branch"
+                                    value={globalNewBranchForm.name}
+                                    onChange={e => setGlobalNewBranchForm({...globalNewBranchForm, name: e.target.value})}
+                                    className="rounded-xl border-border/50 bg-surface-2"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Location</Label>
+                                <Input 
+                                    placeholder="e.g. Dubai"
+                                    value={globalNewBranchForm.location}
+                                    onChange={e => setGlobalNewBranchForm({...globalNewBranchForm, location: e.target.value})}
+                                    className="rounded-xl border-border/50 bg-surface-2"
+                                />
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Status</Label>
+                            <Select 
+                                value={globalNewBranchForm.status} 
+                                onValueChange={(val) => setGlobalNewBranchForm({...globalNewBranchForm, status: val})}
+                            >
+                                <SelectTrigger className="rounded-xl border-border/50 bg-surface-2">
+                                    <SelectValue placeholder="Select status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Active">Active</SelectItem>
+                                    <SelectItem value="Suspended">Suspended</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" className="rounded-xl" onClick={() => setGlobalAddBranchOpen(false)}>Cancel</Button>
+                        <Button className="rounded-xl" onClick={() => {
+                            if (!globalNewBranchForm.tenantId || !globalNewBranchForm.name || !globalNewBranchForm.location) {
+                                toast.error("Please fill all fields");
+                                return;
+                            }
+                            const t = tenants.find(t => t.id === globalNewBranchForm.tenantId);
+                            if (t) {
+                                const limit = t.plan === "Enterprise" ? 999 : 10;
+                                const currentBranches = branches.filter(b => b.tenantId === t.id);
+                                if (currentBranches.length >= limit) {
+                                    toast.error("Outlet limit reached — upgrade plan to add more branches");
+                                    return;
+                                }
+                                const newBranch = {
+                                    id: `b-${Math.random().toString(36).slice(2, 6)}`,
+                                    tenantId: t.id,
+                                    name: globalNewBranchForm.name,
+                                    location: globalNewBranchForm.location,
+                                    status: globalNewBranchForm.status,
+                                    createdAt: new Date().toISOString().split('T')[0]
+                                };
+                                setBranches(prev => [...prev, newBranch]);
+                                setTenants(prev => prev.map(x => x.id === t.id ? { ...x, outlets: x.outlets + 1 } : x));
+                                toast.success("Branch created successfully");
+                                setGlobalAddBranchOpen(false);
+                                setGlobalNewBranchForm({ tenantId: "", name: "", location: "", status: "Active" });
+                            }
+                        }}>Save Branch</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
