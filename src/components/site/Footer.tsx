@@ -6,10 +6,10 @@ const columns = [
     {
         title: "Platform",
         links: [
-            { label: "Super Admin Portal", to: "/demo/super-admin" },
-            { label: "Head Office", to: "/demo/head-office" },
-            { label: "POS Till", to: "/demo/pos-till" },
-            { label: "Aggregator Sync", to: "/demo/aggregators" },
+            { label: "Super Admin Portal", to: "/login" },
+            { label: "Head Office", to: "/login" },
+            { label: "POS Till", to: "/login" },
+            { label: "Aggregator Sync", to: "/login" },
         ],
     },
 ];

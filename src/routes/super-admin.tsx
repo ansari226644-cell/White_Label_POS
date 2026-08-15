@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { getSessionRole, roleRoutes } from "@/lib/auth";
 import {
     Activity,
     Building2,
@@ -44,7 +45,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { initialTenants, platformSeries, aedShort, type Tenant } from "@/lib/demo-data";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/demo/super-admin")({
+export const Route = createFileRoute("/super-admin")({
+    beforeLoad: () => {
+        const role = getSessionRole();
+        if (!role) throw redirect({ to: "/login" });
+        if (role !== "Super Admin") throw redirect({ to: roleRoutes[role] });
+    },
     head: () => ({
         meta: [
             { title: "Super Admin Portal Demo — cloudynationpos" },

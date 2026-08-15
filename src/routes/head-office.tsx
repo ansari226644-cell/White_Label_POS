@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { useAuth, getSessionRole, roleRoutes } from "@/lib/auth";
 import {
   AlertTriangle,
   Building2,
@@ -32,6 +33,16 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
   aed,
   aedShort,
   batches,
@@ -45,7 +56,14 @@ import {
 } from "@/lib/demo-data";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/demo/head-office")({
+export const Route = createFileRoute("/head-office")({
+  beforeLoad: () => {
+    const role = getSessionRole();
+    if (!role) throw redirect({ to: "/login" });
+    if (role !== "Head Office Admin") {
+      throw redirect({ to: roleRoutes[role] });
+    }
+  },
   head: () => ({
     meta: [
       { title: "Head Office Dashboard Demo — cloudynationpos" },
@@ -75,9 +93,14 @@ function expiryTone(days: number) {
 }
 
 function HeadOffice() {
+  const { role } = useAuth();
   const [inclusive, setInclusive] = useState(true);
   const totalSales = useMemo(() => outlets.reduce((s, o) => s + o.sales, 0), []);
   const nearExpiry = batches.filter((b) => b.daysLeft <= 14).length;
+
+  const [localPurchases, setLocalPurchases] = useState(purchases);
+  const [poForm, setPoForm] = useState({ vendor: "", value: "" });
+  const [poOpen, setPoOpen] = useState(false);
 
   const line = [
     { d: "Bananas 1.240 kg", net: 7.13 },
@@ -97,48 +120,31 @@ function HeadOffice() {
         </Button>
       }
     >
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Network sales today" value={aedShort(totalSales)} delta="+9.6% vs yesterday" icon={TrendingUp} />
-        <StatCard label="Outlets reporting" value="14 / 14" delta="All online" icon={Building2} tone="success" />
-        <StatCard label="Near-expiry batches" value={String(nearExpiry)} icon={AlertTriangle} tone="accent" />
-        <StatCard label="Open purchase value" value={aedShort(116300)} icon={Package} />
-      </div>
+      <Tabs defaultValue="dashboard" className="mt-6 flex flex-col md:flex-row gap-8">
+        <aside className="w-full md:w-56 shrink-0">
+          <TabsList className="flex h-auto w-full flex-col items-stretch justify-start gap-1 rounded-xl bg-transparent p-0">
+            <TabsTrigger value="dashboard" className="justify-start px-4 py-2.5 text-sm font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none">Dashboard</TabsTrigger>
+            <TabsTrigger value="branches" className="justify-start px-4 py-2.5 text-sm font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none">Branches</TabsTrigger>
+            <TabsTrigger value="catalog" className="justify-start px-4 py-2.5 text-sm font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none">Catalog</TabsTrigger>
+            <TabsTrigger value="batches" className="justify-start px-4 py-2.5 text-sm font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none">Inventory & Batches</TabsTrigger>
+            <TabsTrigger value="purchasing" className="justify-start px-4 py-2.5 text-sm font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none">Purchasing</TabsTrigger>
+            <TabsTrigger value="roles" className="justify-start px-4 py-2.5 text-sm font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none">Staff & Roles</TabsTrigger>
+            <TabsTrigger value="vat" className="justify-start px-4 py-2.5 text-sm font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none">VAT & Reports</TabsTrigger>
+            <TabsTrigger value="loyalty" className="justify-start px-4 py-2.5 text-sm font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none">Customers</TabsTrigger>
+            <TabsTrigger value="promotions" className="justify-start px-4 py-2.5 text-sm font-semibold data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none">Promotions</TabsTrigger>
+          </TabsList>
+        </aside>
 
-      <Tabs defaultValue="outlets" className="mt-8">
-        <TabsList className="flex w-full flex-wrap justify-start rounded-xl">
-          <TabsTrigger value="outlets">Outlets</TabsTrigger>
-          <TabsTrigger value="catalog">Catalog</TabsTrigger>
-          <TabsTrigger value="batches">Batch & expiry</TabsTrigger>
-          <TabsTrigger value="purchasing">Purchasing</TabsTrigger>
-          <TabsTrigger value="roles">Roles</TabsTrigger>
-          <TabsTrigger value="vat">VAT</TabsTrigger>
-          <TabsTrigger value="loyalty">Loyalty</TabsTrigger>
-          <TabsTrigger value="promotions">Promotions</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="outlets" className="mt-5 space-y-5">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {outlets.map((o) => (
-              <div key={o.id} className="panel p-5">
-                <p className="text-sm font-bold text-ink">{o.name}</p>
-                <p className="text-xs text-muted-foreground">{o.emirate} · {o.tills} tills</p>
-                <p className="mt-4 text-xl font-extrabold text-ink">{aedShort(o.sales)}</p>
-                <p className={`text-xs font-semibold ${o.growth >= 0 ? "text-success" : "text-destructive"}`}>
-                  {o.growth >= 0 ? "+" : ""}
-                  {o.growth}% week on week
-                </p>
-                <div className="mt-4">
-                  <div className="mb-1.5 flex justify-between text-xs text-muted-foreground">
-                    <span>Stock health</span>
-                    <span>{o.stockHealth}%</span>
-                  </div>
-                  <Progress value={o.stockHealth} className="h-2" />
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="panel p-6">
-            <h2 className="text-sm font-bold text-ink">Branch performance · AED 000s</h2>
+        <main className="min-w-0 flex-1">
+          <TabsContent value="dashboard" className="mt-0 space-y-5">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <StatCard label="Network sales today" value={aedShort(totalSales)} delta="+9.6% vs yesterday" icon={TrendingUp} />
+              <StatCard label="Outlets reporting" value="14 / 14" delta="All online" icon={Building2} tone="success" />
+              <StatCard label="Near-expiry batches" value={String(nearExpiry)} icon={AlertTriangle} tone="accent" />
+              <StatCard label="Open purchase value" value={aedShort(116300)} icon={Package} />
+            </div>
+            <div className="panel p-6">
+              <h2 className="text-sm font-bold text-ink">Branch performance · AED 000s</h2>
             <div className="mt-4 h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={branchTrend}>
@@ -168,10 +174,101 @@ function HeadOffice() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-          </div>
-        </TabsContent>
+            </div>
+          </TabsContent>
 
-        <TabsContent value="catalog" className="mt-5">
+          <TabsContent value="branches" className="mt-0 space-y-5">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {outlets.map((o) => (
+                <Dialog key={o.id}>
+                  <DialogTrigger asChild>
+                    <div className="panel p-5 cursor-pointer hover:border-primary/30 transition-colors">
+                      <p className="text-sm font-bold text-ink">{o.name}</p>
+                      <p className="text-xs text-muted-foreground">{o.emirate} · {o.tills} tills</p>
+                      <p className="mt-4 text-xl font-extrabold text-ink">{aedShort(o.sales)}</p>
+                      <p className={`text-xs font-semibold ${o.growth >= 0 ? "text-success" : "text-destructive"}`}>
+                        {o.growth >= 0 ? "+" : ""}
+                        {o.growth}% week on week
+                      </p>
+                      <div className="mt-4">
+                        <div className="mb-1.5 flex justify-between text-xs text-muted-foreground">
+                          <span>Stock health</span>
+                          <span>{o.stockHealth}%</span>
+                        </div>
+                        <Progress value={o.stockHealth} className="h-2" />
+                      </div>
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>Manage Branch: {o.name}</DialogTitle>
+                      <DialogDescription>Adjust local stock and pricing overrides for this branch.</DialogDescription>
+                    </DialogHeader>
+                    <div className="mt-4 space-y-6">
+                      <div>
+                        <h3 className="font-bold text-ink mb-3">Local Inventory</h3>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>SKU</TableHead>
+                              <TableHead>Product</TableHead>
+                              <TableHead>Current Stock</TableHead>
+                              <TableHead>Adjust (+/-)</TableHead>
+                              <TableHead></TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {products.slice(0, 3).map((p, i) => (
+                              <TableRow key={p.sku}>
+                                <TableCell className="text-xs font-mono">{p.sku}</TableCell>
+                                <TableCell className="font-semibold text-ink">{p.name}</TableCell>
+                                <TableCell>{[12, 45, 8][i]} {p.unit}</TableCell>
+                                <TableCell>
+                                  <Input type="number" placeholder="0" className="w-24 h-8 text-sm" />
+                                </TableCell>
+                                <TableCell className="text-right">
+                                  <Button size="sm" variant="outline" onClick={() => toast.success("Stock adjusted")}>Update</Button>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-ink mb-3">Pricing Overrides</h3>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Product</TableHead>
+                              <TableHead>Standard Price</TableHead>
+                              <TableHead>Local Price</TableHead>
+                              <TableHead></TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {products.slice(3, 6).map((p) => (
+                              <TableRow key={p.sku}>
+                                <TableCell className="font-semibold text-ink">{p.name}</TableCell>
+                                <TableCell>{aed(p.price)}</TableCell>
+                                <TableCell>
+                                  <Input type="number" defaultValue={(p.price * 0.9).toFixed(2)} className="w-24 h-8 text-sm" />
+                                </TableCell>
+                                <TableCell className="text-right">
+                                  <Button size="sm" variant="outline" onClick={() => toast.success("Price overridden")}>Save</Button>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="catalog" className="mt-0">
           <div className="panel overflow-x-auto">
             <Table className="min-w-[900px]">
               <TableHeader>
@@ -208,7 +305,7 @@ function HeadOffice() {
           </div>
         </TabsContent>
 
-        <TabsContent value="batches" className="mt-5 space-y-5">
+        <TabsContent value="batches" className="mt-0 space-y-5">
           <div className="flex items-center gap-3 rounded-2xl border border-warning/30 bg-warning/10 p-4">
             <AlertTriangle className="h-5 w-5 text-warning-foreground" />
             <p className="text-sm font-medium text-ink">
@@ -258,7 +355,53 @@ function HeadOffice() {
           </div>
         </TabsContent>
 
-        <TabsContent value="purchasing" className="mt-5">
+        <TabsContent value="purchasing" className="mt-0">
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <h3 className="text-lg font-bold text-ink">Purchasing Pipeline</h3>
+              <p className="text-sm text-muted-foreground">Track Purchase Orders, Goods Received, and Invoices.</p>
+            </div>
+            <Dialog open={poOpen} onOpenChange={setPoOpen}>
+              <DialogTrigger asChild>
+                <Button>Create New PO</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Create Purchase Order</DialogTitle>
+                  <DialogDescription>Draft a new PO to send to a vendor.</DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="space-y-2">
+                    <Label>Vendor Name</Label>
+                    <Input placeholder="e.g. Almarai UAE" value={poForm.vendor} onChange={e => setPoForm({ ...poForm, vendor: e.target.value })} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Estimated Value (AED)</Label>
+                    <Input type="number" placeholder="0.00" value={poForm.value} onChange={e => setPoForm({ ...poForm, value: e.target.value })} />
+                  </div>
+                </div>
+                <div className="flex justify-end gap-2 mt-4">
+                  <Button variant="outline" onClick={() => setPoOpen(false)}>Cancel</Button>
+                  <Button onClick={() => {
+                    if (!poForm.vendor || !poForm.value) {
+                      toast.error("Please fill in all fields");
+                      return;
+                    }
+                    const newPo = {
+                      id: `PO-${new Date().getFullYear()}-${Math.floor(Math.random() * 10000)}`,
+                      stage: "PO" as const,
+                      vendor: poForm.vendor,
+                      value: Number(poForm.value),
+                    };
+                    setLocalPurchases([newPo, ...localPurchases]);
+                    setPoForm({ vendor: "", value: "" });
+                    setPoOpen(false);
+                    toast.success("Purchase Order created");
+                  }}>Submit PO</Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
           <div className="grid gap-5 lg:grid-cols-3">
             {(["PO", "GRN", "Invoice"] as const).map((stage, idx) => (
               <div key={stage} className="panel p-5">
@@ -267,11 +410,11 @@ function HeadOffice() {
                     {idx + 1}. {stage === "PO" ? "Purchase Orders" : stage === "GRN" ? "Goods Received" : "Vendor Invoices"}
                   </h2>
                   <Badge variant="outline" className="rounded-full">
-                    {purchases.filter((p) => p.stage === stage).length}
+                    {localPurchases.filter((p) => p.stage === stage).length}
                   </Badge>
                 </div>
                 <div className="mt-4 space-y-3">
-                  {purchases
+                  {localPurchases
                     .filter((p) => p.stage === stage)
                     .map((p) => (
                       <div key={p.id} className="rounded-xl border border-border bg-surface-2 p-4">
@@ -314,7 +457,7 @@ function HeadOffice() {
           </div>
         </TabsContent>
 
-        <TabsContent value="roles" className="mt-5">
+        <TabsContent value="roles" className="mt-0">
           <div className="grid gap-5 sm:grid-cols-2">
             {roles.map((r) => (
               <div key={r.role} className="panel p-6">
@@ -341,7 +484,7 @@ function HeadOffice() {
           </p>
         </TabsContent>
 
-        <TabsContent value="vat" className="mt-5">
+        <TabsContent value="vat" className="mt-0">
           <div className="grid gap-5 lg:grid-cols-2">
             <div className="panel p-6">
               <h2 className="text-sm font-bold text-ink">VAT configuration</h2>
@@ -416,7 +559,27 @@ function HeadOffice() {
           </div>
         </TabsContent>
 
-        <TabsContent value="loyalty" className="mt-5">
+        <TabsContent value="loyalty" className="mt-0 space-y-5">
+          <div className="panel p-6">
+            <h3 className="text-sm font-bold text-ink mb-4">Point-Redemption Policies</h3>
+            <div className="grid gap-6 sm:grid-cols-3">
+              <div className="space-y-1.5">
+                <Label>Points per 1 AED spent</Label>
+                <Input type="number" defaultValue="10" />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Minimum points to redeem</Label>
+                <Input type="number" defaultValue="5000" />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Redemption Value (AED per 1000 pts)</Label>
+                <Input type="number" defaultValue="10" />
+              </div>
+            </div>
+            <div className="mt-5 flex justify-end">
+              <Button onClick={() => toast.success("Loyalty policies updated")}>Save Policies</Button>
+            </div>
+          </div>
           <div className="panel overflow-x-auto">
             <Table className="min-w-[760px]">
               <TableHeader>
@@ -432,35 +595,74 @@ function HeadOffice() {
               </TableHeader>
               <TableBody>
                 {customers.map((c) => (
-                  <TableRow key={c.id}>
-                    <TableCell className="font-semibold text-ink">{c.name}</TableCell>
-                    <TableCell className="font-mono text-xs">{c.phone}</TableCell>
-                    <TableCell>
-                      <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${tierTone[c.tier]}`}>
-                        <Star className="h-3 w-3" /> {c.tier}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-right tabular-nums">{c.points.toLocaleString("en-AE")}</TableCell>
-                    <TableCell className="text-right tabular-nums">{c.visits}</TableCell>
-                    <TableCell className="text-right font-semibold tabular-nums">{aedShort(c.spend)}</TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="rounded-lg"
-                        onClick={() => toast.success(`Voucher issued to ${c.name}`)}
-                      >
-                        Issue voucher
-                      </Button>
-                    </TableCell>
-                  </TableRow>
+                  <Dialog key={c.id}>
+                    <DialogTrigger asChild>
+                      <TableRow className="cursor-pointer hover:bg-surface-2/50 transition-colors">
+                        <TableCell className="font-semibold text-ink">{c.name}</TableCell>
+                        <TableCell className="font-mono text-xs">{c.phone}</TableCell>
+                        <TableCell>
+                          <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${tierTone[c.tier]}`}>
+                            <Star className="h-3 w-3" /> {c.tier}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">{c.points.toLocaleString("en-AE")}</TableCell>
+                        <TableCell className="text-right tabular-nums">{c.visits}</TableCell>
+                        <TableCell className="text-right font-semibold tabular-nums">{aedShort(c.spend)}</TableCell>
+                        <TableCell className="text-right">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="rounded-lg relative z-10"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toast.success(`Voucher issued to ${c.name}`);
+                            }}
+                          >
+                            Issue voucher
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-2xl">
+                      <DialogHeader>
+                        <DialogTitle>{c.name} - Transaction History</DialogTitle>
+                        <DialogDescription>Recent purchases and loyalty points activity.</DialogDescription>
+                      </DialogHeader>
+                      <div className="mt-4">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Date</TableHead>
+                              <TableHead>Location</TableHead>
+                              <TableHead className="text-right">Amount</TableHead>
+                              <TableHead className="text-right">Points</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {[
+                              { date: "12 Aug 2026", loc: "Al Barsha", amt: 145.50, pts: "+1450" },
+                              { date: "04 Aug 2026", loc: "Deira", amt: 320.00, pts: "+3200" },
+                              { date: "28 Jul 2026", loc: "Al Barsha", amt: 85.25, pts: "+850" },
+                            ].map((h, i) => (
+                              <TableRow key={i}>
+                                <TableCell className="text-muted-foreground">{h.date}</TableCell>
+                                <TableCell>{h.loc}</TableCell>
+                                <TableCell className="text-right font-medium">{aed(h.amt)}</TableCell>
+                                <TableCell className="text-right text-success font-semibold">{h.pts}</TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 ))}
               </TableBody>
             </Table>
           </div>
         </TabsContent>
 
-        <TabsContent value="promotions" className="mt-5">
+        <TabsContent value="promotions" className="mt-0">
           <div className="flex items-center gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4 mb-5">
             <Tag className="h-5 w-5 text-primary" />
             <p className="text-sm font-medium text-ink">
@@ -519,6 +721,7 @@ function HeadOffice() {
             </Table>
           </div>
         </TabsContent>
+        </main>
       </Tabs>
     </DemoShell>
   );

@@ -62,28 +62,28 @@ const modules = [
         title: "SaaS Super-Admin Portal",
         copy: "Create, configure, suspend or upgrade tenant supermarket accounts in seconds — with enforced limits on outlets, tills and monthly order volume.",
         points: ["Tenant lifecycle control", "Tax & currency templates", "Real-time platform analytics"],
-        to: "/demo/super-admin",
+        to: "/login",
     },
     {
         icon: Building2,
         title: "Head Office & Multi-Outlet",
         copy: "One command centre for every branch: central catalog, branch-specific pricing, batch tracking, purchasing and staff permissions.",
         points: ["Central product catalog", "FIFO / FEFO expiry control", "PO → GRN → Invoice"],
-        to: "/demo/head-office",
+        to: "/login",
     },
     {
         icon: Monitor,
         title: "POS Till Terminal",
         copy: "A touch-first checkout built for peak-hour queues — barcode scanning, weighing-scale reads, split payments and full offline billing.",
         points: ["Sub-50ms item lookup", "Split payment settlement", "Shift & X/Z reports"],
-        to: "/demo/pos-till",
+        to: "/login",
     },
     {
         icon: Truck,
         title: "Aggregator Sync Engine",
         copy: "Talabat, Careem, InstaShop and Deliveroo orders land directly in the branch POS queue, with stock and pricing synced both ways.",
         points: ["Unified order ingestion", "Live stock auto-sync", "One-click menu publishing"],
-        to: "/demo/aggregators",
+        to: "/login",
     },
 ];
 
@@ -98,7 +98,7 @@ const deepDives = [
             "Pre-set tax rule templates (UAE VAT 5%) and regional currency settings",
             "Live analytics on network sales volume, active tills, API traffic and system logs",
         ],
-        to: "/demo/super-admin",
+        to: "/login",
         icon: Layers,
     },
     {
@@ -111,7 +111,7 @@ const deepDives = [
             "Purchasing pipeline: POs, GRNs with variance alerts, vendor invoices and AP",
             "Granular RBAC for Store Managers, Inventory Managers, Purchasing Officers and Cashiers",
         ],
-        to: "/demo/head-office",
+        to: "/login",
         icon: Boxes,
     },
     {
@@ -124,7 +124,7 @@ const deepDives = [
             "Split settlement across Cash, Card, Loyalty Points and Store Credit",
             "Cash drawer, scanner, thermal printer and card terminal integration hooks",
         ],
-        to: "/demo/pos-till",
+        to: "/login",
         icon: Barcode,
     },
     {
@@ -137,7 +137,7 @@ const deepDives = [
             "Single-click publishing of catalog, promo and stock-status updates",
             "Secure per-branch vault for OAuth tokens, API keys and sandbox credentials",
         ],
-        to: "/demo/aggregators",
+        to: "/login",
         icon: RefreshCw,
     },
 ];
@@ -202,7 +202,7 @@ function Hero() {
                             variant="outline"
                             className="rounded-xl border-border bg-surface px-6 text-base font-semibold"
                         >
-                            <Link to="/demo/super-admin">See it in action</Link>
+                            <Link to="/login">See it in action</Link>
                         </Button>
                     </div>
                     <dl className="mt-10 grid max-w-lg grid-cols-3 gap-6">

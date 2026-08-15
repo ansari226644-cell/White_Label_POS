@@ -226,7 +226,7 @@ function PricingPage() {
                                 </p>
                                 <div className="flex flex-wrap justify-center gap-3">
                                     <Button asChild className="rounded-xl font-semibold">
-                                        <Link to="/demo/super-admin">
+                                        <Link to="/login">
                                             Open live demo <ArrowRight className="ml-1.5 h-4 w-4" />
                                         </Link>
                                     </Button>

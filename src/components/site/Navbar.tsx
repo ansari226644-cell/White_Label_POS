@@ -36,7 +36,7 @@ export function Navbar() {
 
                 <div className="hidden items-center gap-2 lg:flex">
                     <Button asChild variant="ghost" className="text-sm font-semibold">
-                        <Link to="/demo/super-admin">View live demo</Link>
+                        <Link to="/login">View live demo</Link>
                     </Button>
                     <Button asChild className="rounded-xl text-sm font-semibold shadow-[var(--shadow-soft)]">
                         <a href="/#contact">Book a demo</a>
@@ -66,7 +66,7 @@ export function Navbar() {
                             </a>
                         ))}
                         <Link
-                            to="/demo/super-admin"
+                            to="/login"
                             onClick={() => setOpen(false)}
                             className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-ink"
                         >

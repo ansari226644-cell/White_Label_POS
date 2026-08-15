@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { getSessionRole, roleRoutes } from "@/lib/auth";
 import {
     Banknote,
     CreditCard,
@@ -30,7 +31,12 @@ import {
 import { aed, tillProducts, type TillProduct } from "@/lib/demo-data";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/demo/pos-till")({
+export const Route = createFileRoute("/pos-till")({
+    beforeLoad: () => {
+        const role = getSessionRole();
+        if (!role) throw redirect({ to: "/login" });
+        if (role !== "Cashier") throw redirect({ to: roleRoutes[role] });
+    },
     head: () => ({
         meta: [
             { title: "POS Till Terminal Demo — cloudynationpos" },

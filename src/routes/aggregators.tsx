@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState } from "react";
+import { getSessionRole, roleRoutes } from "@/lib/auth";
 import { Eye, EyeOff, KeyRound, Link2, RefreshCw, Rocket, Timer } from "lucide-react";
 import { DemoShell, StatCard } from "@/components/demo/DemoShell";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +10,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { aed, aggOrders, aggregators, outlets, type Aggregator } from "@/lib/demo-data";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/demo/aggregators")({
+export const Route = createFileRoute("/aggregators")({
+  beforeLoad: () => {
+    const role = getSessionRole();
+    if (!role) throw redirect({ to: "/login" });
+    if (!["Head Office Admin", "Store Manager", "Inventory Manager", "Purchasing Officer"].includes(role)) {
+      throw redirect({ to: roleRoutes[role] });
+    }
+  },
   head: () => ({
     meta: [
       { title: "Aggregator Sync Engine Demo — cloudynationpos" },

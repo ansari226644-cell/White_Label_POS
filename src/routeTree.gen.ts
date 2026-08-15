@@ -10,22 +10,45 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DemoRouteImport } from './routes/demo'
+import { Route as AggregatorsRouteImport } from './routes/aggregators'
+import { Route as HeadOfficeRouteImport } from './routes/head-office'
+import { Route as InventoryManagerRouteImport } from './routes/inventory-manager'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as PosTillRouteImport } from './routes/pos-till'
 import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as DemoIndexRouteImport } from './routes/demo.index'
-import { Route as DemoAggregatorsRouteImport } from './routes/demo.aggregators'
-import { Route as DemoHeadOfficeRouteImport } from './routes/demo.head-office'
-import { Route as DemoPosTillRouteImport } from './routes/demo.pos-till'
-import { Route as DemoSuperAdminRouteImport } from './routes/demo.super-admin'
+import { Route as PurchasingRouteImport } from './routes/purchasing'
+import { Route as StoreManagerRouteImport } from './routes/store-manager'
+import { Route as SuperAdminRouteImport } from './routes/super-admin'
+import { Route as VendorPortalRouteImport } from './routes/vendor-portal'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoRoute = DemoRouteImport.update({
-  id: '/demo',
-  path: '/demo',
+const AggregatorsRoute = AggregatorsRouteImport.update({
+  id: '/aggregators',
+  path: '/aggregators',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HeadOfficeRoute = HeadOfficeRouteImport.update({
+  id: '/head-office',
+  path: '/head-office',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InventoryManagerRoute = InventoryManagerRouteImport.update({
+  id: '/inventory-manager',
+  path: '/inventory-manager',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PosTillRoute = PosTillRouteImport.update({
+  id: '/pos-till',
+  path: '/pos-till',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -33,98 +56,121 @@ const PricingRoute = PricingRouteImport.update({
   path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoIndexRoute = DemoIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DemoRoute,
+const PurchasingRoute = PurchasingRouteImport.update({
+  id: '/purchasing',
+  path: '/purchasing',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const DemoAggregatorsRoute = DemoAggregatorsRouteImport.update({
-  id: '/aggregators',
-  path: '/aggregators',
-  getParentRoute: () => DemoRoute,
+const StoreManagerRoute = StoreManagerRouteImport.update({
+  id: '/store-manager',
+  path: '/store-manager',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const DemoHeadOfficeRoute = DemoHeadOfficeRouteImport.update({
-  id: '/head-office',
-  path: '/head-office',
-  getParentRoute: () => DemoRoute,
-} as any)
-const DemoPosTillRoute = DemoPosTillRouteImport.update({
-  id: '/pos-till',
-  path: '/pos-till',
-  getParentRoute: () => DemoRoute,
-} as any)
-const DemoSuperAdminRoute = DemoSuperAdminRouteImport.update({
+const SuperAdminRoute = SuperAdminRouteImport.update({
   id: '/super-admin',
   path: '/super-admin',
-  getParentRoute: () => DemoRoute,
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VendorPortalRoute = VendorPortalRouteImport.update({
+  id: '/vendor-portal',
+  path: '/vendor-portal',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/demo': typeof DemoRouteWithChildren
+  '/aggregators': typeof AggregatorsRoute
+  '/head-office': typeof HeadOfficeRoute
+  '/inventory-manager': typeof InventoryManagerRoute
+  '/login': typeof LoginRoute
+  '/pos-till': typeof PosTillRoute
   '/pricing': typeof PricingRoute
-  '/demo/aggregators': typeof DemoAggregatorsRoute
-  '/demo/head-office': typeof DemoHeadOfficeRoute
-  '/demo/pos-till': typeof DemoPosTillRoute
-  '/demo/super-admin': typeof DemoSuperAdminRoute
-  '/demo/': typeof DemoIndexRoute
+  '/purchasing': typeof PurchasingRoute
+  '/store-manager': typeof StoreManagerRoute
+  '/super-admin': typeof SuperAdminRoute
+  '/vendor-portal': typeof VendorPortalRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/aggregators': typeof AggregatorsRoute
+  '/head-office': typeof HeadOfficeRoute
+  '/inventory-manager': typeof InventoryManagerRoute
+  '/login': typeof LoginRoute
+  '/pos-till': typeof PosTillRoute
   '/pricing': typeof PricingRoute
-  '/demo/aggregators': typeof DemoAggregatorsRoute
-  '/demo/head-office': typeof DemoHeadOfficeRoute
-  '/demo/pos-till': typeof DemoPosTillRoute
-  '/demo/super-admin': typeof DemoSuperAdminRoute
-  '/demo': typeof DemoIndexRoute
+  '/purchasing': typeof PurchasingRoute
+  '/store-manager': typeof StoreManagerRoute
+  '/super-admin': typeof SuperAdminRoute
+  '/vendor-portal': typeof VendorPortalRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/demo': typeof DemoRouteWithChildren
+  '/aggregators': typeof AggregatorsRoute
+  '/head-office': typeof HeadOfficeRoute
+  '/inventory-manager': typeof InventoryManagerRoute
+  '/login': typeof LoginRoute
+  '/pos-till': typeof PosTillRoute
   '/pricing': typeof PricingRoute
-  '/demo/aggregators': typeof DemoAggregatorsRoute
-  '/demo/head-office': typeof DemoHeadOfficeRoute
-  '/demo/pos-till': typeof DemoPosTillRoute
-  '/demo/super-admin': typeof DemoSuperAdminRoute
-  '/demo/': typeof DemoIndexRoute
+  '/purchasing': typeof PurchasingRoute
+  '/store-manager': typeof StoreManagerRoute
+  '/super-admin': typeof SuperAdminRoute
+  '/vendor-portal': typeof VendorPortalRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/demo'
+    | '/aggregators'
+    | '/head-office'
+    | '/inventory-manager'
+    | '/login'
+    | '/pos-till'
     | '/pricing'
-    | '/demo/aggregators'
-    | '/demo/head-office'
-    | '/demo/pos-till'
-    | '/demo/super-admin'
-    | '/demo/'
+    | '/purchasing'
+    | '/store-manager'
+    | '/super-admin'
+    | '/vendor-portal'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/aggregators'
+    | '/head-office'
+    | '/inventory-manager'
+    | '/login'
+    | '/pos-till'
     | '/pricing'
-    | '/demo/aggregators'
-    | '/demo/head-office'
-    | '/demo/pos-till'
-    | '/demo/super-admin'
-    | '/demo'
+    | '/purchasing'
+    | '/store-manager'
+    | '/super-admin'
+    | '/vendor-portal'
   id:
     | '__root__'
     | '/'
-    | '/demo'
+    | '/aggregators'
+    | '/head-office'
+    | '/inventory-manager'
+    | '/login'
+    | '/pos-till'
     | '/pricing'
-    | '/demo/aggregators'
-    | '/demo/head-office'
-    | '/demo/pos-till'
-    | '/demo/super-admin'
-    | '/demo/'
+    | '/purchasing'
+    | '/store-manager'
+    | '/super-admin'
+    | '/vendor-portal'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DemoRoute: typeof DemoRouteWithChildren
+  AggregatorsRoute: typeof AggregatorsRoute
+  HeadOfficeRoute: typeof HeadOfficeRoute
+  InventoryManagerRoute: typeof InventoryManagerRoute
+  LoginRoute: typeof LoginRoute
+  PosTillRoute: typeof PosTillRoute
   PricingRoute: typeof PricingRoute
+  PurchasingRoute: typeof PurchasingRoute
+  StoreManagerRoute: typeof StoreManagerRoute
+  SuperAdminRoute: typeof SuperAdminRoute
+  VendorPortalRoute: typeof VendorPortalRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -136,11 +182,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo': {
-      id: '/demo'
-      path: '/demo'
-      fullPath: '/demo'
-      preLoaderRoute: typeof DemoRouteImport
+    '/aggregators': {
+      id: '/aggregators'
+      path: '/aggregators'
+      fullPath: '/aggregators'
+      preLoaderRoute: typeof AggregatorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/head-office': {
+      id: '/head-office'
+      path: '/head-office'
+      fullPath: '/head-office'
+      preLoaderRoute: typeof HeadOfficeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inventory-manager': {
+      id: '/inventory-manager'
+      path: '/inventory-manager'
+      fullPath: '/inventory-manager'
+      preLoaderRoute: typeof InventoryManagerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pos-till': {
+      id: '/pos-till'
+      path: '/pos-till'
+      fullPath: '/pos-till'
+      preLoaderRoute: typeof PosTillRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -150,66 +224,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/': {
-      id: '/demo/'
-      path: '/'
-      fullPath: '/demo/'
-      preLoaderRoute: typeof DemoIndexRouteImport
-      parentRoute: typeof DemoRoute
+    '/purchasing': {
+      id: '/purchasing'
+      path: '/purchasing'
+      fullPath: '/purchasing'
+      preLoaderRoute: typeof PurchasingRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/demo/aggregators': {
-      id: '/demo/aggregators'
-      path: '/aggregators'
-      fullPath: '/demo/aggregators'
-      preLoaderRoute: typeof DemoAggregatorsRouteImport
-      parentRoute: typeof DemoRoute
+    '/store-manager': {
+      id: '/store-manager'
+      path: '/store-manager'
+      fullPath: '/store-manager'
+      preLoaderRoute: typeof StoreManagerRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/demo/head-office': {
-      id: '/demo/head-office'
-      path: '/head-office'
-      fullPath: '/demo/head-office'
-      preLoaderRoute: typeof DemoHeadOfficeRouteImport
-      parentRoute: typeof DemoRoute
-    }
-    '/demo/pos-till': {
-      id: '/demo/pos-till'
-      path: '/pos-till'
-      fullPath: '/demo/pos-till'
-      preLoaderRoute: typeof DemoPosTillRouteImport
-      parentRoute: typeof DemoRoute
-    }
-    '/demo/super-admin': {
-      id: '/demo/super-admin'
+    '/super-admin': {
+      id: '/super-admin'
       path: '/super-admin'
-      fullPath: '/demo/super-admin'
-      preLoaderRoute: typeof DemoSuperAdminRouteImport
-      parentRoute: typeof DemoRoute
+      fullPath: '/super-admin'
+      preLoaderRoute: typeof SuperAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vendor-portal': {
+      id: '/vendor-portal'
+      path: '/vendor-portal'
+      fullPath: '/vendor-portal'
+      preLoaderRoute: typeof VendorPortalRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface DemoRouteChildren {
-  DemoAggregatorsRoute: typeof DemoAggregatorsRoute
-  DemoHeadOfficeRoute: typeof DemoHeadOfficeRoute
-  DemoPosTillRoute: typeof DemoPosTillRoute
-  DemoSuperAdminRoute: typeof DemoSuperAdminRoute
-  DemoIndexRoute: typeof DemoIndexRoute
-}
-
-const DemoRouteChildren: DemoRouteChildren = {
-  DemoAggregatorsRoute: DemoAggregatorsRoute,
-  DemoHeadOfficeRoute: DemoHeadOfficeRoute,
-  DemoPosTillRoute: DemoPosTillRoute,
-  DemoSuperAdminRoute: DemoSuperAdminRoute,
-  DemoIndexRoute: DemoIndexRoute,
-}
-
-const DemoRouteWithChildren = DemoRoute._addFileChildren(DemoRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DemoRoute: DemoRouteWithChildren,
+  AggregatorsRoute: AggregatorsRoute,
+  HeadOfficeRoute: HeadOfficeRoute,
+  InventoryManagerRoute: InventoryManagerRoute,
+  LoginRoute: LoginRoute,
+  PosTillRoute: PosTillRoute,
   PricingRoute: PricingRoute,
+  PurchasingRoute: PurchasingRoute,
+  StoreManagerRoute: StoreManagerRoute,
+  SuperAdminRoute: SuperAdminRoute,
+  VendorPortalRoute: VendorPortalRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
