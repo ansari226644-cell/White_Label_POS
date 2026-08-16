@@ -90,13 +90,17 @@ export function Footer() {
                     <h3 className="text-sm font-bold text-ink">Contact</h3>
                     <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
                         <li className="flex items-center gap-2">
-                            <Mail className="h-4 w-4 text-primary" /> sales@mtnexus.ae
+                            <Mail className="h-4 w-4 text-primary" /> cloudynationpos@gmail.com
                         </li>
                         <li className="flex items-center gap-2">
-                            <Phone className="h-4 w-4 text-primary" /> +971 4 000 0000
+                            <Phone className="h-4 w-4 text-primary" /> +971552177186
                         </li>
                         <li className="flex items-start gap-2">
-                            <MapPin className="mt-0.5 h-4 w-4 text-primary" /> Business Bay, Dubai, UAE
+                            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> 
+                            <span>
+                                CWS-1V-227668<br />
+                                26th Floor, Amber Gem Tower, Ajman
+                            </span>
                         </li>
                     </ul>
                 </div>

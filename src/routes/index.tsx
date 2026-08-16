@@ -90,7 +90,7 @@ const modules = [
 const deepDives = [
     {
         tag: "Module 01 · Platform Operator",
-        title: "Onboard a new supermarket chain before lunch",
+        title: "Onboard a new supermarket chain before launch",
         copy: "The Super-Admin Portal is where you run the business of running POS. Provision tenants, enforce commercial limits and watch the whole network in real time.",
         bullets: [
             "Instantly create, configure, suspend or upgrade tenant accounts",
