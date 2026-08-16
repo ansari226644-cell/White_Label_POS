@@ -90,7 +90,7 @@ export function Footer() {
                     <h3 className="text-sm font-bold text-ink">Contact</h3>
                     <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
                         <li className="flex items-center gap-2">
-                            <Mail className="h-4 w-4 text-primary" /> cloudynationpos@gmail.com
+                            <Mail className="h-4 w-4 text-primary" /> Info@cloudynationpos.com
                         </li>
                         <li className="flex items-center gap-2">
                             <Phone className="h-4 w-4 text-primary" /> +971552177186
